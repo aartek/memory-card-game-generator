@@ -1,0 +1,9 @@
+<div class="d-flex flex-column align-items-end">
+    <div class="items" [ngClass]="{'dotted': printBorders}">
+        @for (item of items | keyvalue; track item.key) {
+        <div class="item" [ngClass]="{'dotted': printBorders}" *ngIf="item.value.cropped">
+            <img class="image" [src]="item.value.cropped">
+        </div>
+        }
+    </div>
+</div>

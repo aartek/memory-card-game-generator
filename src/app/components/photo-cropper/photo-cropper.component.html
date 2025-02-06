@@ -1,0 +1,30 @@
+<div class="card">
+    <div class="card-body">
+        <div class="container mb-2 d-flex justify-content-center p-0">
+            <div *ngIf="!photo?.file">
+                <svg class="bd-placeholder-img img-thumbnail" width="300" height="300"
+                    xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A generic square placeholder image."
+                    preserveAspectRatio="xMidYMid slice" focusable="false">
+                    <title>A generic square placeholder image.</title>
+                    <rect width="100%" height="100%" fill="#868e96"></rect>
+                </svg>
+            </div>
+            <div *ngIf="photo?.file">
+                <angular-cropper *ngIf="!photo?.cropped" [cropperOptions]="config" [imageUrl]="photo?.file"
+                    #angularCropper>
+                </angular-cropper>
+                <img class="image" [src]="photo?.cropped" *ngIf="photo?.cropped">
+            </div>
+        </div>
+        <div class="mb-2">
+            <ng-container *ngTemplateOutlet="fileloader"></ng-container>
+        </div>
+        <div class="mb-2">
+            <button class="btn btn-success me-2" (click)="crop()" [disabled]="!photo?.file"><i
+                    class="bi bi-crop me-2"></i>
+                Crop
+            </button>
+            <ng-container *ngTemplateOutlet="buttons"></ng-container>
+        </div>
+    </div>
+</div>

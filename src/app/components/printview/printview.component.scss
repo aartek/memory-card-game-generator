@@ -1,0 +1,56 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.item {
+    visibility: hidden;
+}
+
+
+@media print {
+    @page {
+        background-color: white;
+        size: landscape;
+    }
+
+    .items {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 0;
+        gap: 5mm;
+
+        &.dotted {
+            border-left: 1mm dotted black;
+            border-top: 1mm dotted black;
+            /* taking care of the box model */
+            box-sizing: border-box;
+            gap: 0;
+        }
+
+
+    }
+
+    .item {
+        visibility: visible;
+        width: 5cm;
+
+        &.dotted {
+            border-bottom: 1mm dotted black;
+            border-right: 1mm dotted black;
+            /* taking care of the box model */
+            box-sizing: border-box;
+        }
+
+        img {
+            max-width: 100%;
+
+
+
+        }
+
+    }
+}
