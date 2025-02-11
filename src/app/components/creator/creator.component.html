@@ -1,19 +1,23 @@
-<div class="container">
-    @for (item of items | keyvalue; track item.value.photo.id; let i = $index) {
+
+<div class="container p-3">
+    @for (item of items | keyvalue; track item.value.id; let i = $index) {
     <ng-template #fileloader>
-        <app-file-loader [key]="item.value.photo.id"></app-file-loader>
+        <app-file-loader (onFileLoaded)="fileLoaded($event)"></app-file-loader>
     </ng-template>
 
     <ng-template #buttons>
-        <button class="btn btn-secondary me-2" (click)="remove(item.value.photo.id)"
-            [disabled]="getCount()==1 && item.value.photo"><i class="bi bi-trash"></i></button>
+        <button class="btn btn-secondary me-2" (click)="remove(item.value.id)"><i class="bi bi-trash"></i></button>
     </ng-template>
 
 
     <div class="item m-2">
-        <app-photo-cropper [photo]="item.value.photo" (result)="cropResult(item.value.photo.id, $event)"
-            [fileloader]="fileloader" [buttons]="buttons">
+        <app-photo-cropper [photo]="item.value" (result)="cropResult(item.value.id, $event)" [buttons]="buttons">
         </app-photo-cropper>
     </div>
     }
+</div>
+<div class="sticky-bottom upload-bar">
+    <div class="p-3">
+        <app-file-loader (onFileLoaded)="fileLoaded($event)" [multiple]="true"></app-file-loader>
+    </div>
 </div>

@@ -18,7 +18,7 @@ import { PhotoEventListener } from '../../model/photo-saved-listener';
 export class CreatorComponent implements PhotoEventListener {
 
 
-  public items: { [key: string]: { photo: Photo } } = {}
+  public items: { [key: string]: Photo } = {}
 
   // indexOrderAsc = (akv: KeyValue<string, any>, bkv: KeyValue<string, any>): number => {
   //   const a = akv.value.order;
@@ -31,11 +31,12 @@ export class CreatorComponent implements PhotoEventListener {
   }
 
   photoSaved(key: string): void {
-    //ignored
+    this.items[key] = this.fileService.getPhoto(key);
   }
+
   photoLoaded(key: string): void {
-    this.items[key].photo = this.fileService.getPhoto(key);
-    this.addNewPhotoPanelIfNeeded();
+    this.items[key] = this.fileService.getPhoto(key);
+    // this.addNewPhotoPanelIfNeeded();
 
   }
   photoRemoved(key: string): void {
@@ -46,22 +47,22 @@ export class CreatorComponent implements PhotoEventListener {
   ngOnInit(): void {
     this.eventService.addPhotoEventListener(this);
     this.fileService.getPhotos().forEach((photo, i) => {
-      this.items[photo.id] = { photo }
+      this.items[photo.id] = photo
     });
-    this.addNewPhotoPanel()
+    // this.addNewPhotoPanel()
   }
 
   cropResult(id: string | undefined, data: any) {
     if (!!id && !!this.items[id]) {
-      this.fileService.savePhoto({ ...this.items[id].photo, cropped: data })
+      this.fileService.savePhoto({ ...this.items[id], cropped: data })
     }
   }
 
   private addNewPhotoPanelIfNeeded(): void {
     const lastId = Object.keys(this.items).sort().pop();
-    if(!!lastId){
+    if (!!lastId) {
       const lastPic = this.items[lastId];
-      if (!!lastPic?.photo.file) {
+      if (!!lastPic?.file) {
         this.addNewPhotoPanel()
       }
     }
@@ -69,16 +70,26 @@ export class CreatorComponent implements PhotoEventListener {
 
   private addNewPhotoPanel(): void {
     const id = uuidv7();
-    this.items[id] = { photo: { id: id } as Photo}
+    this.items[id] = { id: id } as Photo 
   }
 
   remove(id: string) {
     this.fileService.removePhoto(id)
-    this.addNewPhotoPanelIfNeeded()
+    // this.addNewPhotoPanelIfNeeded()
   }
 
   getCount() {
     return Object.keys(this.items).length;
+  }
+
+  fileLoaded(event: { name: string, file: string }) {
+    const id = uuidv7();
+    const photo = {
+      id: id,
+      name: event.name,
+      file: event.file
+    } as Photo;
+    this.fileService.savePhoto(photo)
   }
 
 }

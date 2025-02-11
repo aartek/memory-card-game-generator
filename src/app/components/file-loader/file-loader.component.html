@@ -1,2 +1,5 @@
-<input class="form-control" type="file" id="input" (change)="handleFileInput($any($event.target).files)"
-    [multiple]="false" />
+<div>
+    <label for="input" class="form-label">Add photos</label>
+    <input #fileInput class="form-control" type="file" id="input" (change)="handleFileInput($any($event.target).files)"
+    [multiple]="multiple" />  
+</div>

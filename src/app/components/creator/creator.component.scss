@@ -4,6 +4,7 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
+    min-height: 100%;
 }
 
 .test{
@@ -28,4 +29,8 @@
     color: black;
     text-align: center;
     z-index: 100;
+}
+
+.upload-bar {
+    background-color: #fff;
 }

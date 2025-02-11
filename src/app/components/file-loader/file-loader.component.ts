@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FileServiceService } from '../../services/file-service.service';
 import { EventServiceService } from '../../services/event-service.service';
 import { Photo } from '../../model/photo';
@@ -12,9 +12,14 @@ import { Photo } from '../../model/photo';
 })
 export class FileLoaderComponent {
 
+  @Input()
+  public multiple: boolean = false;
 
-  @Input({ required: true })
-  public key!: string;
+  @Output()
+  onFileLoaded: EventEmitter<{ name: string, file: string }> = new EventEmitter();
+
+  @ViewChild('fileInput')
+  fileInput!: ElementRef;
 
   constructor(private fileService: FileServiceService, private eventService: EventServiceService, private changeDetector: ChangeDetectorRef) {
   }
@@ -34,18 +39,11 @@ export class FileLoaderComponent {
 
           reader.onload = (_event) => {
             if (typeof reader.result === "string") {
-              const photo = {
-                id: this.key,
-                name: file.name,
-                file: reader.result
-              } as Photo;
-              this.fileService.savePhoto(photo)
-              this.eventService.fileLoaded(this.key);
-              this.changeDetector.detectChanges();
+              this.onFileLoaded.emit({ name: file.name, file: reader.result });
             }
           }
         })
-
-
+    this.fileInput.nativeElement.value = "";
+    this.changeDetector.detectChanges();
   }
 }
