@@ -1,1 +1,23 @@
-/* You can add global styles to this file, and also import other style files */
+body {
+    margin: 0;
+    height: 100vh;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    overflow: hidden;
+}
+
+html {
+    height: -webkit-fill-available;
+}
+
+main {
+    height: 100vh;
+    height: -webkit-fill-available;
+    max-height: 100vh;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.scrollarea {
+    overflow-y: auto;
+}
